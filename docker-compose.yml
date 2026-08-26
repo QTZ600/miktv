@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  miktv:
+    image: miktv:latest
+    container_name: miktv
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - TZ=Asia/Shanghai
+      - NODE_ENV=production
+      # 服务端口（容器内固定为 3000，如需改映射调整上面 ports 即可）
+      # - PORT=3000
+      # ====== 重要配置 ======
+      # 媒体目录（多个用 ; 分隔，每个目录必须在下面 volumes 中挂载）
+      - MEDIA_DIRS=/media/movies;/media/tvshows;/media/others
+      # 数据目录（存放数据库、缓存等，建议持久化）
+      - DATA_DIR=/data
+      # 缩略图宽度（像素）
+      - THUMBNAIL_WIDTH=400
+      # CORS 来源（* 表示允许全部，内网一般没问题）
+      - CORS_ORIGIN=*
+      # 访问密码（留空表示不启用，建议设置）
+      # - AUTH_TOKEN=your_password_here
+    volumes:
+      # ====== 媒体目录映射（按实际修改左侧宿主路径） ======
+      # 群晖示例：/volume1/video/Movies -> /media/movies
+      - /volume1/video/Movies:/media/movies:ro
+      - /volume1/video/TVShows:/media/tvshows:ro
+      - /volume1/video/Others:/media/others:ro
+      # ====== 持久化数据（重要！防止容器重建丢失数据） ======
+      # 群晖建议：放在 docker/miktv/data 目录
+      - ./data:/data
+    # 可选：内存/CPU 限制（群晖低内存设备建议设置）
+    mem_limit: 1g
+    cpu_shares: 512
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,22 @@
+{
+  "name": "miktv-backend",
+  "version": "0.1.0",
+  "description": "MikTV - Home Media Center Backend",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "scan": "node src/scripts/scan.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "mime-types": "^2.1.35",
+    "fs-extra": "^11.1.1",
+    "nanoid": "^3.3.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

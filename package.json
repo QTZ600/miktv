@@ -1,0 +1,20 @@
+{
+  "name": "miktv",
+  "version": "0.1.0",
+  "description": "MikTV - 家庭媒体中心 | Home Media Center",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "scan": "cd backend && npm run scan",
+    "docker:build": "docker build -t miktv:latest .",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f miktv"
+  },
+  "keywords": ["media", "nas", "media-server", "home-theater", "iptv"],
+  "license": "MIT"
+}
