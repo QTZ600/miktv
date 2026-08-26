@@ -9,11 +9,12 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "30000:3000"
     environment:
       - TZ=Asia/Shanghai
       - NODE_ENV=production
       # 服务端口（容器内固定为 3000，如需改映射调整上面 ports 即可）
+      # 当前映射：NAS主机 30000 -> 容器 3000
       # - PORT=3000
       # ====== 重要配置 ======
       # 媒体目录（多个用 ; 分隔，每个目录必须在下面 volumes 中挂载）
