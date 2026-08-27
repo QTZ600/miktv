@@ -1,0 +1,11 @@
+node_modules/
+uploads/
+public/product-images/
+.env
+data.db
+db-export.json
+public/assets/
+public/libs/
+*.log
+.DS_Store
+git-sync.js
