@@ -20,7 +20,6 @@ async function initDB() {
   if (_initPromise) return _initPromise;
 
   _initPromise = (async () => {
-    await Database.initSQL();
     const db = new Database(DB_PATH);
 
     db.pragma('journal_mode = WAL');
@@ -191,8 +190,6 @@ async function initDB() {
     try {
       db.prepare('ALTER TABLE return_records ADD COLUMN category TEXT').run();
     } catch (e) {}
-
-    Database.loadExportData(db, EXPORT_PATH);
 
     const cnt = db.prepare('SELECT COUNT(*) as c FROM vehicle_brands').get();
     if (cnt.c === 0) {
