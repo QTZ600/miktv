@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data.db');
+const DB_PATH = process.env.DB_PATH || '/var/lib/quality-board/data.db';
 const EXPORT_PATH = path.join(__dirname, 'db-export.json');
 
 let _db = null;

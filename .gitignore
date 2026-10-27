@@ -2,7 +2,9 @@ node_modules/
 uploads/
 public/product-images/
 .env
-data.db
+*.db
+*.db-wal
+*.db-shm
 db-export.json
 public/assets/
 public/libs/
