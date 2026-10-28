@@ -184,6 +184,13 @@ async function initDB() {
       updated_at INTEGER
     )`);
 
+    db.exec(`CREATE TABLE IF NOT EXISTS suppliers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL
+    )`);
+
     try {
       db.prepare('ALTER TABLE prod_records ADD COLUMN category TEXT').run();
     } catch (e) {}
