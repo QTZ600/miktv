@@ -1,0 +1,40 @@
+[Unit]
+Description=Quality Board (雷石质量管理系统)
+Documentation=
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# 使用专用系统用户运行，先用 install-node.sh 创建
+User=quality
+Group=quality
+
+WorkingDirectory=/opt/quality-board
+
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=DB_PATH=/var/lib/quality-board/data.db
+Environment=UPLOAD_DIR=/var/lib/quality-board/uploads
+Environment=PRODUCT_IMAGES_DIR=/var/lib/quality-board/product-images
+Environment=TZ=Asia/Shanghai
+
+ExecStart=/usr/bin/node server.js
+
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+# 基础加固
+NoNewPrivileges=true
+PrivateTmp=false
+ProtectSystem=full
+ReadWritePaths=/var/lib/quality-board
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=quality-board
+
+[Install]
+WantedBy=multi-user.target

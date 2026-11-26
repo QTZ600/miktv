@@ -1,0 +1,25 @@
+services:
+  quality-board:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quality-board:latest
+    container_name: quality-board
+    restart: unless-stopped
+    ports:
+      # 仅绑定本机回环地址，由 Nginx 对外提供 HTTPS
+      - "127.0.0.1:3000:3000"
+    environment:
+      PORT: "3000"
+      DB_PATH: /data/data.db
+      UPLOAD_DIR: /data/uploads
+      PRODUCT_IMAGES_DIR: /data/product-images
+      TZ: Asia/Shanghai
+    volumes:
+      # 持久化目录：数据库与上传文件都在这里，容器重建不丢失
+      - ./data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
