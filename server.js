@@ -12,11 +12,11 @@ const { handleAiAnalysis, ensureAiTables } = require('./ai-analysis');
 const { handleVersionHub, ensureVersionTables } = require("./version-hub");
 const sharp = require('sharp');
 
-const UPLOAD_DIR = nodePath.join(__dirname, 'uploads');
+const UPLOAD_DIR = process.env.UPLOAD_DIR || nodePath.join(__dirname, 'uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 const PUBLIC_DIR = nodePath.join(__dirname, 'public');
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
-const PRODUCT_IMAGES_DIR = nodePath.join(PUBLIC_DIR, 'product-images');
+const PRODUCT_IMAGES_DIR = process.env.PRODUCT_IMAGES_DIR || nodePath.join(PUBLIC_DIR, 'product-images');
 if (!fs.existsSync(PRODUCT_IMAGES_DIR)) fs.mkdirSync(PRODUCT_IMAGES_DIR, { recursive: true });
 const LIBS_DIR = nodePath.join(PUBLIC_DIR, 'libs');
 const MAX_UPLOAD_SIZE = 10 * 1024 * 1024;
@@ -8597,12 +8597,12 @@ async function handleRequest(method, pathname, query, cookies, body, headers, ho
     // SVG: save as-is (no raster compression needed)
     if (ext === '.svg') {
       const safeName = 'product_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex') + ext;
-      require('fs').writeFileSync(require('path').join('/opt/quality-board/public/product-images', safeName), filePart.data);
+      require('fs').writeFileSync(require('path').join(PRODUCT_IMAGES_DIR, safeName), filePart.data);
       return json({ ok: true, image_path: '/product-images/' + safeName });
     }
     // Raster images: compress with sharp (max 1200px wide, JPEG quality 80)
     const safeName = 'product_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex') + '.jpg';
-    const destPath = require('path').join('/opt/quality-board/public/product-images', safeName);
+    const destPath = require('path').join(PRODUCT_IMAGES_DIR, safeName);
     try {
       await sharp(filePart.data)
         .resize({ width: 1200, withoutEnlargement: true })

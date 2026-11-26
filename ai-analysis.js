@@ -8,7 +8,7 @@ const http = require('http');
 const { getDb } = require('./kv');
 const XLSX = require('xlsx');
 
-const AI_UPLOAD_DIR = path.join(__dirname, 'uploads', 'ai');
+const AI_UPLOAD_DIR = path.join(process.env.UPLOAD_DIR || path.join(__dirname, 'uploads'), 'ai');
 if (!fs.existsSync(AI_UPLOAD_DIR)) fs.mkdirSync(AI_UPLOAD_DIR, { recursive: true });
 
 const MAX_AI_UPLOAD_SIZE = 20 * 1024 * 1024; // 20MB

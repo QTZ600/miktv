@@ -5,8 +5,9 @@ const nodePath = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 
-const VER_FIRMWARE_DIR = nodePath.join(__dirname, 'uploads', 'version-firmware');
-const VER_FILES_DIR = nodePath.join(__dirname, 'uploads', 'version-files');
+const VER_UPLOAD_DIR = process.env.UPLOAD_DIR || nodePath.join(__dirname, 'uploads');
+const VER_FIRMWARE_DIR = nodePath.join(VER_UPLOAD_DIR, 'version-firmware');
+const VER_FILES_DIR = nodePath.join(VER_UPLOAD_DIR, 'version-files');
 if (!fs.existsSync(VER_FIRMWARE_DIR)) fs.mkdirSync(VER_FIRMWARE_DIR, { recursive: true });
 if (!fs.existsSync(VER_FILES_DIR)) fs.mkdirSync(VER_FILES_DIR, { recursive: true });
 
