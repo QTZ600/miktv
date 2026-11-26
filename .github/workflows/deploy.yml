@@ -1,0 +1,32 @@
+name: Deploy to Cloud Server
+
+# 推送到 main 分支自动部署；也可在 Actions 页面手动触发
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 同一分支的多次推送排队，避免并发部署互相覆盖
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & Restart on Server
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH 到服务器执行 deploy.sh
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          script_stop: true
+          command_timeout: 15m
+          script: |
+            set -euo pipefail
+            export DEPLOY_PATH="${{ secrets.DEPLOY_PATH || '/opt/quality-board' }}"
+            export BRANCH="main"
+            bash "$DEPLOY_PATH/deploy.sh"

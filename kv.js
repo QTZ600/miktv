@@ -20,7 +20,7 @@ async function initDB() {
   if (_initPromise) return _initPromise;
 
   _initPromise = (async () => {
-    await Database.initSQL();
+    fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
     const db = new Database(DB_PATH);
 
     db.pragma('journal_mode = WAL');
@@ -185,14 +185,19 @@ async function initDB() {
       updated_at INTEGER
     )`);
 
+    db.exec(`CREATE TABLE IF NOT EXISTS suppliers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL
+    )`);
+
     try {
       db.prepare('ALTER TABLE prod_records ADD COLUMN category TEXT').run();
     } catch (e) {}
     try {
       db.prepare('ALTER TABLE return_records ADD COLUMN category TEXT').run();
     } catch (e) {}
-
-    Database.loadExportData(db, EXPORT_PATH);
 
     const cnt = db.prepare('SELECT COUNT(*) as c FROM vehicle_brands').get();
     if (cnt.c === 0) {
