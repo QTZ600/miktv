@@ -15,6 +15,9 @@ services:
       UPLOAD_DIR: /data/uploads
       PRODUCT_IMAGES_DIR: /data/product-images
       TZ: Asia/Shanghai
+    # 服务器上的 .env（含管理员密码、飞书密钥等）会覆盖/补充上面的环境变量
+    env_file:
+      - .env
     volumes:
       # 持久化目录：数据库与上传文件都在这里，容器重建不丢失
       - ./data:/data

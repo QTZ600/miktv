@@ -8,6 +8,8 @@ db-export.json
 .env
 .uploads
 uploads
+data
+.github
 *.log
 Dockerfile
 docker-compose.yml
