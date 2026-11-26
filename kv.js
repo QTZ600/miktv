@@ -20,6 +20,7 @@ async function initDB() {
   if (_initPromise) return _initPromise;
 
   _initPromise = (async () => {
+    fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
     const db = new Database(DB_PATH);
 
     db.pragma('journal_mode = WAL');
